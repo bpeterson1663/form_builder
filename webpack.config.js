@@ -1,5 +1,7 @@
-import path from 'path';
-import webpack from 'webpack';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
+const webpack = require('webpack');
+
 
 module.exports = {
   entry: "./src/index.tsx",
