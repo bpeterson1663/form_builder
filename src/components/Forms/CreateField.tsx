@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 
+import OPTIONS from './FieldOptions.constant'
+
 interface InputItem {
   title: string
   type: string
@@ -19,7 +21,15 @@ const AddInput: React.FunctionComponent<AddInputProps> = (props: AddInputProps):
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input name="title" ref={register} />
-      <input name="type" ref={register({ required: true })} />
+      <select name="type" ref={register({ required: true })}>
+        {OPTIONS.map((option, i) => {
+          return (
+            <option key={i} value={option.type}>
+              {option.display}
+            </option>
+          )
+        })}
+      </select>
       {errors.type && <span>This field is required</span>}
       <input type="submit" />
     </form>
