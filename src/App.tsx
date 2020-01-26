@@ -4,12 +4,12 @@ import './App.css'
 import Welcome from './components/Welcome'
 
 const App: React.FunctionComponent = (): JSX.Element => {
-    return (
-        <div className="App">
-            <h1>Form Builder</h1>
-            <Welcome firstName="Brady" lastName="Peterson" />
-        </div>
-    )
+  return (
+    <div className="App">
+      <h1>Form Builder</h1>
+      <Welcome />
+    </div>
+  )
 }
 
 export default hot(module)(App)
