@@ -13,14 +13,16 @@ interface AddInputProps {
 }
 
 const AddInput: React.FunctionComponent<AddInputProps> = (props: AddInputProps): JSX.Element => {
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors, reset } = useForm()
   const onSubmit = (data: InputItem): void => {
     props.handleItemSubmit(data)
+    reset()
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input name="title" ref={register} />
+      <input name="title" ref={register({ required: true })} />
+      {errors.title && <span>This field is required</span>}
       <select name="type" ref={register({ required: true })}>
         {OPTIONS.map((option, i) => {
           return (

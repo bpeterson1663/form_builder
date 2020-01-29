@@ -1,6 +1,10 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { DndProvider } from 'react-dnd'
+import Backend from 'react-dnd-html5-backend'
 import CreateField from './Forms/CreateField'
+import update from 'immutability-helper'
+import DragItem from './Forms/DragItem'
 
 const FormCreator: React.FunctionComponent = (): JSX.Element => {
   interface InputItem {
@@ -20,17 +24,34 @@ const FormCreator: React.FunctionComponent = (): JSX.Element => {
 
     setInputList(newList)
   }
+  const moveItem = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const dragItem = inputList[dragIndex]
+      setInputList(
+        update(inputList, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragItem],
+          ],
+        }),
+      )
+    },
+    [inputList],
+  )
+  const renderInput = (item: InputItem, i: number): JSX.Element => {
+    return (
+      <DragItem id={i} index={i} type={item.type} title={item.title} moveItem={moveItem} handleDelete={handleDelete} />
+    )
+  }
 
   return (
     <div>
       <CreateField handleItemSubmit={handleNewItem} />
-      {inputList.map((item, i) => {
-        return (
-          <div key={i}>
-            {item.title} <input type={item.type} /> <button onClick={(): void => handleDelete(i)}>Delete</button>
-          </div>
-        )
-      })}
+      <DndProvider backend={Backend}>
+        {inputList.map((item, i) => {
+          return <div key={i}>{renderInput(item, i)}</div>
+        })}
+      </DndProvider>
     </div>
   )
 }
